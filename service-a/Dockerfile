@@ -28,7 +28,7 @@ RUN useradd --no-create-home --uid 10001 appuser
 
 # Salin hasil build dari stage build
 # Sesuaikan nama file JAR jika berbeda
-COPY --from=build /app/target/service-a-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/service-a.jar app.jar
 
 # Port default Spring Boot
 EXPOSE 8080
