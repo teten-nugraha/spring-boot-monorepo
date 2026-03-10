@@ -40,3 +40,4 @@ ENV JAVA_OPTS="-XX:MaxRAMPercentage=75 -XX:InitialRAMPercentage=50 -Djava.securi
 USER 10001
 
 ENTRYPOINT ["sh","-c","java $JAVA_OPTS -jar app.jar"]
+
