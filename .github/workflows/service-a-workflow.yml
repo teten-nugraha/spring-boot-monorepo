@@ -26,6 +26,6 @@ jobs:
         image: teten/service-a
         tags: latest
         registry: docker.io
-        dockerfile: Dockerfile
+        dockerfile: service-a/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
