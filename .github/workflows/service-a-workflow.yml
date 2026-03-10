@@ -1,33 +1,54 @@
-name: Auth CI/CD
+name: Service A CI/CD
+
 on:
   push:
     branches:
       - main
     paths:
       - 'service-a/**'
+
 jobs:
-  build:
+
+  jdk:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 17
-      uses: actions/setup-java@v1
-      with:
-        java-version: '17'
-        distribution: 'adopt'
-        cache: maven
-    - name: Build with Maven
-      run: mvn clean install
+      - uses: actions/checkout@v4
 
-    - name: Build & push Docker image
-      uses: mr-smithers-excellent/docker-build-push@v5
-      with:
-        image: teten/service-a
-        tags: latest
-        registry: docker.io
-        dockerfile: service-a/Dockerfile
-        directory: service-a
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Prepare JDK 17
+        run: echo "Prepare JDK 17"
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
 
 
+  build:
+    needs: jdk
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build with Maven
+        working-directory: service-a
+        run: mvn -B -DskipTests clean package
+
+
+  push:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: teten/service-a
+          tags: latest
+          registry: docker.io
+          dockerfile: service-a/Dockerfile
+          directory: service-a
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
