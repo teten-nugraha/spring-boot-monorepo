@@ -27,5 +27,6 @@ jobs:
         tags: latest
         registry: docker.io
         dockerfile: service-a/Dockerfile
+        directory: service-a
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
