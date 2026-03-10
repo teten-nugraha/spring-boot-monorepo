@@ -1,0 +1,28 @@
+name: Auth CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'service-a/**'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Building a service"
+
+  package:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Packaging a service"
+
+  deploy:
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploying a service"
